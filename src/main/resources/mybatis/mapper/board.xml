@@ -21,7 +21,7 @@
 	</select>
 	
 	<select id="selectByBno" parameterType="int" resultType="board">
-		SELECT bno, btitle, bcontent, bdate, mid, bhitcount, battachoname, battachsname, battachtype 
+		SELECT bno, btitle, bcontent, bdate, mid, bhitcount, battachoname, battachsname, battachtype, blikehit 
 		FROM board 
 		WHERE bno=#{bno}
 	</select>
@@ -71,6 +71,13 @@
 	<update id="updateBhitcount" parameterType="int">	
 		UPDATE board SET bhitcount=bhitcount+1 WHERE bno=#{bno}	
 	</update>	
+	
+	<update id="updateLike" parameterType="int">
+		UPDATE board SET blikehit=blikehit+1 where bno=#{bno} 
+	</update>
+	<update id="cancelLike" parameterType="int">
+		UPDATE board SET blikehit=blikehit-1 where bno=#{bno}
+	</update>
 </mapper>
 
 
