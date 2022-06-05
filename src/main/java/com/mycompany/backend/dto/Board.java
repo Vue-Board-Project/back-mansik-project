@@ -14,6 +14,7 @@ public class Board {
 	private String mid;
 	private Date bdate;
 	private int bhitcount;
+	private int blikehit;
 	private MultipartFile battach;
 	private String battachoname;
 	private String battachsname;
