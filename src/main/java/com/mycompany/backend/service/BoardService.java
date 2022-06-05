@@ -55,6 +55,14 @@ public class BoardService {
 	public List<Board> getBoardsByCount(Pager pager) {
 		return boardDao.selectByPageCount(pager);
 	}
+
+	public List<Board> getBoardsBySearch(Pager pager) {
+		return boardDao.selectByPageSearch(pager);
+	}
+
+	public int getTotalBoardNumSearch(Pager pager) {
+		return boardDao.countSearch(pager);
+	}
 }
 
 

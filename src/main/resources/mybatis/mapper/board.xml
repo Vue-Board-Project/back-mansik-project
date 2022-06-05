@@ -30,6 +30,25 @@
 		WHERE rnum &gt;= #{startRowNo}
 	</select>
 	
+	<select id="selectByPageSearch" parameterType="pager" resultType="board">
+		SELECT rnum, bno, btitle, bdate, mid, bhitcount
+		FROM (
+		  SELECT ROWNUM as rnum, bno, btitle, bdate, mid, bhitcount
+		  FROM (
+		    SELECT bno, btitle, bdate, mid, bhitcount 
+		    FROM board 
+		    where ${searchOption} like '%'||#{search}||'%'
+		    order by ${sortOption} desc
+		  )
+		  WHERE rownum &lt;= #{endRowNo}  
+		)
+		WHERE rnum &gt;= #{startRowNo}
+	</select>
+	
+	<select id="countSearch"  parameterType="pager" resultType="int">
+		SELECT count(*) FROM board where ${searchOption} like '%'||#{search}||'%' 
+	</select>
+	
 	<select id="count" resultType="int">
 		SELECT count(*) FROM board
 	</select>

@@ -63,6 +63,38 @@ public class BoardController {
 		return map;
 	}
 	
+	@GetMapping("/list/search")
+	public Map<String, Object> listSearchBar(@RequestParam(defaultValue = "1") int pageNo, String searchText, String searchOption, String sortOption) {
+		log.info("실행");
+		
+		Pager pager = new Pager(8, 5, 0, pageNo);
+		
+		if(sortOption.equals("latest")) {
+			pager.setSortOption("bno");
+		}else if(sortOption.equals("count")){
+			pager.setSortOption("bhitcount");
+		}
+		
+		if(searchOption.equals("title")) {
+			pager.setSearchOption("btitle");
+		}else if(searchOption.equals("writer")){
+			pager.setSearchOption("mid");
+		}
+		
+		pager.setSearch(searchText);
+		
+		int totalRowsSearch = boardService.getTotalBoardNumSearch(pager);
+		pager.setTotalRows(totalRowsSearch);
+		
+		List<Board> list = boardService.getBoardsBySearch(pager);
+
+		log.info(list);
+		Map<String, Object> map = new HashMap<>();
+		map.put("boards", list);
+		map.put("pager", pager);
+		return map;
+	}
+	
 	@PostMapping("/")
 	public Board create(Board board) {
 		log.info("실행");
