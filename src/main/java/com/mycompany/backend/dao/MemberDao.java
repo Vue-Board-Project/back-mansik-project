@@ -8,4 +8,6 @@ import com.mycompany.backend.dto.Member;
 public interface MemberDao {
 	public int insert(Member member);	
 	public Member selectByMid(String mid);
+  public Member selectByEmail(String memail);
+  public void updatePW(Member member);
 }

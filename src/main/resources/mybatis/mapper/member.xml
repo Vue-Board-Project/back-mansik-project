@@ -13,4 +13,16 @@
 		FROM member
 		WHERE mid=#{mid}
 	</select>
+	
+	<!-- 이메일로 셀렉트 -->
+	<select id="selectByEmail" parameterType="string" resultType="member">
+		SELECT mid, mname, mpassword, menabled, mrole, memail
+		FROM member
+		WHERE memail = #{memail}
+	</select>
+	
+	<!-- 비밀번호 업데이트 -->
+	<update id="updatePW" parameterType="member">
+		UPDATE member set mpassword = #{mpassword} where memail = #{memail}
+	</update>
 </mapper> 
