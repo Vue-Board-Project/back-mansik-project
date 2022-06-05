@@ -50,6 +50,19 @@ public class BoardController {
 		return map;
 	}
 	
+	@GetMapping("/list/sort")
+	public Map<String, Object> listChangeSort(@RequestParam(defaultValue = "1") int pageNo) {
+		log.info("실행");
+		
+		int totalRows = boardService.getTotalBoardNum();
+		Pager pager = new Pager(8, 5, totalRows, pageNo);
+		List<Board> list = boardService.getBoardsByCount(pager);
+		Map<String, Object> map = new HashMap<>();
+		map.put("boards", list);
+		map.put("pager", pager);
+		return map;
+	}
+	
 	@PostMapping("/")
 	public Board create(Board board) {
 		log.info("실행");

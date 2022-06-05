@@ -51,6 +51,10 @@ public class BoardService {
 		log.info("실행");
 		boardDao.deleteByBno(bno);
 	}
+
+	public List<Board> getBoardsByCount(Pager pager) {
+		return boardDao.selectByPageCount(pager);
+	}
 }
 
 

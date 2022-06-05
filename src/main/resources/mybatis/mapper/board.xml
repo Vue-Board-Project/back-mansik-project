@@ -16,6 +16,20 @@
 		WHERE rnum &gt;= #{startRowNo}
 	</select>
 	
+	<select id="selectByPageCount" parameterType="pager" resultType="board">
+		SELECT rnum, bno, btitle, bdate, mid, bhitcount
+		FROM (
+		  SELECT ROWNUM as rnum, bno, btitle, bdate, mid, bhitcount
+		  FROM (
+		    SELECT bno, btitle, bdate, mid, bhitcount 
+		    FROM board
+		    ORDER BY bhitcount DESC
+		  )
+		  WHERE rownum &lt;= #{endRowNo}  
+		)
+		WHERE rnum &gt;= #{startRowNo}
+	</select>
+	
 	<select id="count" resultType="int">
 		SELECT count(*) FROM board
 	</select>

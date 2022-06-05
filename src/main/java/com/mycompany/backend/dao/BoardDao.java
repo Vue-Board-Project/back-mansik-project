@@ -16,5 +16,6 @@ public interface BoardDao {
 	public int deleteByBno(int bno);
 	public int update(Board board);
 	public int updateBhitcount(int bno);
+	public List<Board> selectByPageCount(Pager pager);
 }
 
