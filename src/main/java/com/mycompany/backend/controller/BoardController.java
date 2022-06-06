@@ -67,7 +67,19 @@ public class BoardController {
 	public Map<String, Object> listSearchBar(@RequestParam(defaultValue = "1") int pageNo, String searchText, String searchOption, String sortOption) {
 		log.info("실행");
 		
-		Pager pager = new Pager(8, 5, 0, pageNo);
+		Pager pagerr = new Pager(8, 5, 0, pageNo);
+		
+		if(searchOption.equals("title")) {
+			pagerr.setSearchOption("btitle");
+		}else if(searchOption.equals("writer")){
+			pagerr.setSearchOption("mid");
+		}
+		
+		pagerr.setSearch(searchText);
+		int totalRowsSearch = boardService.getTotalBoardNumSearch(pagerr);
+
+		Pager pager = new Pager(8, 5, totalRowsSearch, pageNo);
+
 		
 		if(sortOption.equals("latest")) {
 			pager.setSortOption("bno");
@@ -83,12 +95,8 @@ public class BoardController {
 		
 		pager.setSearch(searchText);
 		
-		int totalRowsSearch = boardService.getTotalBoardNumSearch(pager);
-		pager.setTotalRows(totalRowsSearch);
-		
 		List<Board> list = boardService.getBoardsBySearch(pager);
 
-		log.info(list);
 		Map<String, Object> map = new HashMap<>();
 		map.put("boards", list);
 		map.put("pager", pager);
