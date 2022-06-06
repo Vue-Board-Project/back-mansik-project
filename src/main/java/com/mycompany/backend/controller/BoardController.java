@@ -175,5 +175,12 @@ public class BoardController {
 				.body(resource);
 		
 	}
-	//
+	@PutMapping("/")
+  public Board updateLike(Board board) {
+	  log.info("실행");
+	  board.setBlikehit(board.getBlikehit());
+    boardService.updateBoard(board);
+    Board dbBoard = boardService.getBoard(board.getBno(), false);
+    return dbBoard;
+	}
 }
