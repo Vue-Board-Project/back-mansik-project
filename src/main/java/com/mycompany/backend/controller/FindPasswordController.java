@@ -15,6 +15,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -36,7 +37,7 @@ public class FindPasswordController {
   private MemberService memberService;
 	
 	//비번찾기 인풋값 post
-	@PostMapping("/findPassword")
+	@PutMapping("/findPassword")
 	public Map<String, Object> findPassword(@RequestBody Member member) {
 		log.info("실행");
 		log.info(member.getMemail());

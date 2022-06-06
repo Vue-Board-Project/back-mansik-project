@@ -10,4 +10,5 @@ public interface MemberDao {
 	public Member selectByMid(String mid);
   public Member selectByEmail(String memail);
   public void updatePW(Member member);
+  public void updateMember(Member member);
 }
