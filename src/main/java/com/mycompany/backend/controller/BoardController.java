@@ -24,13 +24,11 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.mycompany.backend.dto.Board;
 import com.mycompany.backend.dto.Comment;
-import com.mycompany.backend.dto.LikeBoard;
 import com.mycompany.backend.dto.Pager;
 import com.mycompany.backend.dto.Photo;
 import com.mycompany.backend.service.BoardService;
 import com.mycompany.backend.service.CommentService;
 import com.mycompany.backend.service.PhotoService;
-import com.mycompany.backend.service.BoardService.LikeInfo;
 
 import lombok.extern.log4j.Log4j2;
 
