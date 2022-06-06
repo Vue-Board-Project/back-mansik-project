@@ -175,7 +175,7 @@ public class BoardController {
 				.body(resource);
 		
 	}
-	@PutMapping("/")
+	@PutMapping("/board")
   public Board updateLike(Board board) {
 	  log.info("실행");
 	  board.setBlikehit(board.getBlikehit());
