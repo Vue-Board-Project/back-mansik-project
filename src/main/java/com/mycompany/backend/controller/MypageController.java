@@ -46,6 +46,7 @@ public class MypageController {
   public Map<String, Object> updateMember(@RequestBody Member member){
     log.info("실행");
     log.info(member.getMid());
+    log.info(member.getMpassword());
     Map<String, Object> map = new HashMap<>();
     UpdateMember um = memberService.memberUpdate(member);
     log.info(um);

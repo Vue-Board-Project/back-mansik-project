@@ -228,6 +228,7 @@ public class MemberService {
     } else {
       Member dbMember = member;
       log.info(dbMember.getMid());
+      log.info(dbMember.getMpassword());
       PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
       dbMember.setMpassword(passwordEncoder.encode(dbMember.getMpassword()));
       memberDao.updateMember(dbMember);
