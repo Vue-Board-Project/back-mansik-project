@@ -111,6 +111,20 @@
 	<update id="cancelLike" parameterType="int">
 		UPDATE board SET blikehit=blikehit-1 where bno=#{bno}
 	</update>
+	
+	<insert id="upLikeInfo" parameterType="likeboard">
+		insert into likeboard(bno, mid) values (#{bno}, #{mid})
+	</insert>
+	
+	<delete id="downLikeInfo" parameterType="likeboard">
+		delete from likeboard where bno=#{bno} and mid=#{mid}
+	</delete>
+	
+	<select id="selectLikeMidbno" parameterType="likeboard" resultType="int">
+		SELECT count(*)
+		FROM likeboard
+		WHERE mid=#{mid} and bno=#{bno}
+	</select>
 </mapper>
 
 

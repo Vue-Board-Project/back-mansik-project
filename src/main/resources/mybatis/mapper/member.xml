@@ -25,4 +25,9 @@
 	<update id="updatePW" parameterType="member">
 		UPDATE member set mpassword = #{mpassword} where memail = #{memail}
 	</update>
+	
+	<!-- 멤버 정보 업데이트 -->
+	<update id="updateMember" parameterType="member">
+		UPDATE member set mpassword = #{mpassword}, mname = #{mname}, memail = #{memail} where mid = #{mid}
+	</update>
 </mapper> 

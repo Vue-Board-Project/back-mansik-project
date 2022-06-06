@@ -24,11 +24,13 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.mycompany.backend.dto.Board;
 import com.mycompany.backend.dto.Comment;
+import com.mycompany.backend.dto.LikeBoard;
 import com.mycompany.backend.dto.Pager;
 import com.mycompany.backend.dto.Photo;
 import com.mycompany.backend.service.BoardService;
 import com.mycompany.backend.service.CommentService;
 import com.mycompany.backend.service.PhotoService;
+import com.mycompany.backend.service.BoardService.LikeInfo;
 
 import lombok.extern.log4j.Log4j2;
 
@@ -72,7 +74,19 @@ public class BoardController {
 	public Map<String, Object> listSearchBar(@RequestParam(defaultValue = "1") int pageNo, String searchText, String searchOption, String sortOption) {
 	
 		
-		Pager pager = new Pager(8, 5, 0, pageNo);
+		Pager pagerr = new Pager(8, 5, 0, pageNo);
+		
+		if(searchOption.equals("title")) {
+			pagerr.setSearchOption("btitle");
+		}else if(searchOption.equals("writer")){
+			pagerr.setSearchOption("mid");
+		}
+		
+		pagerr.setSearch(searchText);
+		int totalRowsSearch = boardService.getTotalBoardNumSearch(pagerr);
+
+		Pager pager = new Pager(8, 5, totalRowsSearch, pageNo);
+
 		
 		if(sortOption.equals("latest")) {
 			pager.setSortOption("bno");
@@ -88,12 +102,8 @@ public class BoardController {
 		
 		pager.setSearch(searchText);
 		
-		int totalRowsSearch = boardService.getTotalBoardNumSearch(pager);
-		pager.setTotalRows(totalRowsSearch);
-		
 		List<Board> list = boardService.getBoardsBySearch(pager);
 
-		log.info(list);
 		Map<String, Object> map = new HashMap<>();
 		map.put("boards", list);
 		map.put("pager", pager);
@@ -247,4 +257,22 @@ public class BoardController {
     return photo;
   }
 
+	@PutMapping("/{bno}")
+  public int updateLike(@PathVariable int bno, @RequestParam(defaultValue = "user") String mid) {
+	  log.info("실행");
+	  log.info("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"+bno+" "+mid);
+	  int likeCount=boardService.likeCheck(bno, mid);
+	  log.info(likeCount);
+	  if(likeCount==0) {
+	    log.info("ㅁ머하셈"+likeCount);
+	    boardService.updateLike(bno);
+      boardService.upLikeInfo(bno, mid);
+	  }else if(likeCount==1){
+	    log.info("머하셈22222"+likeCount);
+	    boardService.downLikeInfo(bno, mid);
+	    boardService.cancelLike(bno);
+	  }
+	  return likeCount;
+	}
+	
 }

@@ -45,6 +45,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     //요청 경로 권한 설정
     http.authorizeHttpRequests()
       .antMatchers("/board/**").authenticated() //authenticated() 인증된 사용자만, 로그인 필요
+      .antMatchers("/mypage/**").authenticated()
       .antMatchers("/**").permitAll(); // 위에 빼고 나머지는 로그인 없이 사용가능!
     //CORS 설정(다른 도메인의 JavaScript로 접근을 할 수 있도록 허용)
     http.cors();

@@ -48,6 +48,11 @@ public class MemberService {
     SUCCESS, FAIL
   }
   
+  //아이디 찾기 결과
+  public enum UpdateMember{
+    SUCCESS, FAIL
+  }
+  
 	@Resource
 	private MemberDao memberDao;
 	
@@ -211,6 +216,23 @@ public class MemberService {
     } else {
       sendmail(dbEmail, "findId", dbEmail.getMid());
       return FindIdResult.SUCCESS;
+    }
+  }
+  
+  //회원정보수정
+  @Transactional
+  public UpdateMember memberUpdate(Member member) {
+    log.info(member.getMid());
+    if(memberDao.selectByMid(member.getMid()) == null) {
+      return UpdateMember.FAIL;
+    } else {
+      Member dbMember = member;
+      log.info(dbMember.getMid());
+      log.info(dbMember.getMpassword());
+      PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
+      dbMember.setMpassword(passwordEncoder.encode(dbMember.getMpassword()));
+      memberDao.updateMember(dbMember);
+      return UpdateMember.SUCCESS;
     }
   }
 }
