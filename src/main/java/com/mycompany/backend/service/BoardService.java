@@ -63,6 +63,12 @@ public class BoardService {
 	public int getTotalBoardNumSearch(Pager pager) {
 		return boardDao.countSearch(pager);
 	}
+	
+	//추천 수 증가
+	public void updateLike(int bno) {
+	  boardDao.updateLike(bno);
+	}
+
 }
 
 

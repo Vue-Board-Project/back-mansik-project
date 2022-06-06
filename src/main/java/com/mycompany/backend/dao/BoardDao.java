@@ -19,5 +19,7 @@ public interface BoardDao {
 	public List<Board> selectByPageCount(Pager pager);
 	public List<Board> selectByPageSearch(Pager pager);
 	public int countSearch(Pager pager);
+	public int updateLike(int bno);
+	public int cancelLike(int bno);
 }
 

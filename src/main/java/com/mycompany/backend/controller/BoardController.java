@@ -183,5 +183,11 @@ public class BoardController {
 				.body(resource);
 		
 	}
-	//
+	@PutMapping("/{bno}")
+  public Board updateLike(@PathVariable int bno) {
+	  log.info("실행");
+    boardService.updateLike(bno);
+    Board dbBoard = boardService.getBoard(bno, false);
+    return dbBoard;
+	}
 }
