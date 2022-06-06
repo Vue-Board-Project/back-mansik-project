@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mycompany.backend.dao.CommentDao">
+
+<select id="selectBybno" parameterType="int" resultType="comment">
+		SELECT cno,bno,comments,cdate,cuserid
+		FROM boardcomment
+		WHERE bno=#{bno}
+		ORDER BY cdate desc
+
+</select>
+<insert id="insertComment" parameterType="comment">
+<selectKey order="BEFORE" resultType="int" keyProperty="cno">
+			SELECT seq_boardcomment.nextval FROM dual
+		</selectKey>
+	insert into boardcomment values (#{cno},#{bno},#{comments},sysdate,#{cuserid})
+</insert>
+
+<delete id="deleteComment" parameterType="int">
+	delete from boardcomment where cno=#{cno}
+</delete>
+
+<update id="updateComment"  parameterType="comment">
+	update boardcomment set comments=#{comments} where cno=#{cno}
+</update>
+<select id="getComment" parameterType="int" resultType="comment">
+	select cno,bno,comments,cdate,cuserid
+	from boardcomment
+	where cno=#{cno}
+</select>
+
+
+</mapper>
+
+

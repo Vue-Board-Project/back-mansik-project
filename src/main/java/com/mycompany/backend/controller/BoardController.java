@@ -2,8 +2,6 @@ package com.mycompany.backend.controller;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -25,8 +23,12 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.mycompany.backend.dto.Board;
+import com.mycompany.backend.dto.Comment;
 import com.mycompany.backend.dto.Pager;
+import com.mycompany.backend.dto.Photo;
 import com.mycompany.backend.service.BoardService;
+import com.mycompany.backend.service.CommentService;
+import com.mycompany.backend.service.PhotoService;
 
 import lombok.extern.log4j.Log4j2;
 
@@ -36,10 +38,13 @@ import lombok.extern.log4j.Log4j2;
 public class BoardController {
 	@Resource
 	private BoardService boardService;
-	
+	@Resource
+	 private CommentService commentService;
+	@Resource
+	private PhotoService photoService;
 	@GetMapping("/list")
 	public Map<String, Object> list(@RequestParam(defaultValue = "1") int pageNo) {
-		log.info("실행");
+	
 		
 		int totalRows = boardService.getTotalBoardNum();
 		Pager pager = new Pager(8, 5, totalRows, pageNo);
@@ -52,7 +57,7 @@ public class BoardController {
 	
 	@GetMapping("/list/sort")
 	public Map<String, Object> listChangeSort(@RequestParam(defaultValue = "1") int pageNo) {
-		log.info("실행");
+	
 		
 		int totalRows = boardService.getTotalBoardNum();
 		Pager pager = new Pager(8, 5, totalRows, pageNo);
@@ -65,7 +70,7 @@ public class BoardController {
 	
 	@GetMapping("/list/search")
 	public Map<String, Object> listSearchBar(@RequestParam(defaultValue = "1") int pageNo, String searchText, String searchOption, String sortOption) {
-		log.info("실행");
+	
 		
 		Pager pager = new Pager(8, 5, 0, pageNo);
 		
@@ -97,10 +102,11 @@ public class BoardController {
 	
 	@PostMapping("/")
 	public Board create(Board board) {
-		log.info("실행");
+	
 		if(board.getBattach() != null && !board.getBattach().isEmpty()) {
 			MultipartFile mf = board.getBattach();
 			board.setBattachoname(mf.getOriginalFilename());
+	
 			board.setBattachsname(new Date().getTime() +"-"+ mf.getOriginalFilename());
 			board.setBattachtype(mf.getContentType());
 			try {
@@ -117,7 +123,7 @@ public class BoardController {
 	
 	@PutMapping("/")
 	public Board update(Board board) {
-		log.info("실행");
+	
 		if(board.getBattach() != null && !board.getBattach().isEmpty()) {
 			MultipartFile mf = board.getBattach();
 			board.setBattachoname(mf.getOriginalFilename());
@@ -138,7 +144,7 @@ public class BoardController {
 	//http://localhost/board/3
 	@GetMapping("/{bno}")
 	public Board read(@PathVariable int bno,@RequestParam(defaultValue = "false") boolean hit) {
-		log.info("실행");
+		
 		Board board = boardService.getBoard(bno, hit);
 		return board;
 	}
@@ -146,7 +152,7 @@ public class BoardController {
 	//@PathVariable 이렇게 넘기는 데이터는 다른사람이 봐도 중요하지 않은 정보들
 	@DeleteMapping("/{bno}")
 	public Map<String, String> delete(@PathVariable int bno) {
-		log.info("실행");
+	
 		boardService.removeBoard(bno);
 		Map<String, String> map = new HashMap<>();
 		map.put("result", "success");
@@ -175,5 +181,70 @@ public class BoardController {
 				.body(resource);
 		
 	}
-	//
+
+  @GetMapping("/comment/{bno}")
+  public Map<String,Object> searchComment(@PathVariable int bno){
+    
+    List<Comment> comment=commentService.allComment(bno);
+ 
+    Map<String,Object> map=new HashMap<>();
+    map.put("comment", comment);
+    
+    return map;
+    
+  }
+  
+  @PostMapping("/comment")
+  public void  createComment(Comment comment){
+    commentService.createComment(comment);
+   }
+  
+  @DeleteMapping("/delete/{cno}")
+  public Map<String, String> deleteComment(@PathVariable int cno) {
+  
+    commentService.deleteComment(cno);
+    Map<String, String> map = new HashMap<>();
+    map.put("result", "success");
+    return map;
+  }
+  
+  @PutMapping("/update")
+  public Map<String, String> updateComment(Comment comment) {
+ 
+    Map<String, String> map = new HashMap<>();
+    commentService.updateComment(comment);
+    map.put("result", "success");
+    return map;
+  }
+  
+  @GetMapping("/getcomment/{cno}")
+  public Comment readcomment(@PathVariable int cno) {
+    Comment comment=commentService.getComment(cno);
+    return comment;
+  }
+  @PostMapping("/photo")
+  public void  createphoto(Photo photo){
+    
+    if(photo.getBattach() != null && !photo.getBattach().isEmpty()) {
+      log.info("~~~~~~~~~~~~~~~~~~~~~~"+photo);
+      MultipartFile mf = photo.getBattach();
+      photo.setPname(mf.getOriginalFilename());
+      photo.setPsname(new Date().getTime() +"-"+ mf.getOriginalFilename());
+      photo.setPtype(mf.getContentType());
+      try {
+        File file = new File("C:/Temp/uploadfiles/"+photo.getPsname());
+        mf.transferTo(file);
+      } catch (Exception e) {
+        log.error(e.getMessage());
+      } 
+    }
+    photoService.insertPhoto(photo);
+  }
+  
+  @GetMapping("/photoread")
+  public List<Photo> readPhoto(@PathVariable int bno){
+    List<Photo> photo=photoService.selectPhoto(bno);
+    return photo;
+  }
+
 }

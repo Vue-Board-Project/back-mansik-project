@@ -19,7 +19,7 @@ public class Jwt {
   
   //AccessToken 생성
   public static String createAccessToken(String mid, String authority) { //아이디, 스프링시큐리티 권한
-    log.info("실행");
+ 
     String accessToken = null;
     
     try {
@@ -37,14 +37,14 @@ public class Jwt {
                           .compact();
     } catch (UnsupportedEncodingException e) {
       //e.printStackTrace();
-      log.error(e.getMessage());
+    
     }
     return accessToken;
   }
   
 //AccessToken 생성
   public static String createRefreshToken(String mid, String authority) { //아이디, 스프링시큐리티 권한
-    log.info("실행");
+  
     String refreshToken = null;
     
     try {
@@ -62,14 +62,13 @@ public class Jwt {
                           .compact();
     } catch (UnsupportedEncodingException e) {
       //e.printStackTrace();
-      log.error(e.getMessage());
+    
     }
     return refreshToken;
   }
   
   public static boolean validateToken(String token) {
-    log.info("실행");
-    log.info(token);
+ 
     boolean result = false;
     
     try {
@@ -80,7 +79,7 @@ public class Jwt {
           .getExpiration() //만료기간  
           .after(new Date()); //만료기간이 현재 시간보다 나중인지 -> 기간이 남았다면 true, 기간이 지났다면 false 
     } catch (Exception e) {
-      log.info(e);
+    
       //log.info(e.getMessage());
     }
     return result;
@@ -88,7 +87,7 @@ public class Jwt {
   
   //토큰 만료 시간 얻기
   public static Date getExpiration(String token) {
-    log.info("실행");
+  
     Date result = null;
     
     try {
@@ -98,14 +97,14 @@ public class Jwt {
           .getBody()
           .getExpiration();
     } catch (Exception e) {
-      log.info(e.getMessage());
+   
     }
     return result;
   }
   
   //인증 사용자 정보 얻기
   public static Map<String, String> getUserInfo(String token){ //payload like claims
-    log.info("실행");
+
     Map<String, String> result = new HashMap<>();
     
     try {
@@ -116,7 +115,7 @@ public class Jwt {
       result.put("mid", claims.get("mid",String.class));
       result.put("authority", claims.get("authority", String.class));
     } catch (Exception e) {
-      log.info(e.getMessage());
+   
     }
     return result;
   }

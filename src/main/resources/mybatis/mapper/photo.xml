@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mycompany.backend.dao.PhotoDao">
+
+<insert id="insertPhoto" parameterType="photo">
+		<selectKey order="BEFORE" resultType="int" keyProperty="bno">
+			select LAST_NUMBER from user_sequences
+			where SEQUENCE_NAME = 'SEQ_BNO'
+		</selectKey>
+	insert into photo values(seq_photo.nextval,#{bno},#{pname},#{psname},#{ptype})
+</insert>
+
+<select id="selectPhoto" parameterType="int"  resultType="photo">
+	select pno,bno,pho,pname
+	from photo
+	where bno=#{bno}
+</select>
+
+</mapper>
+
+
