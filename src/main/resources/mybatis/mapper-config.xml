@@ -6,6 +6,7 @@
 		<typeAlias type="com.mycompany.backend.dto.Board" alias="board"/>
 		<typeAlias type="com.mycompany.backend.dto.Pager" alias="pager"/>
 		<typeAlias type="com.mycompany.backend.dto.Member" alias="member"/>
+		<typeAlias type="com.mycompany.backend.dto.LikeBoard" alias="likeboard"/>
 	</typeAliases>	
 </configuration> 
 

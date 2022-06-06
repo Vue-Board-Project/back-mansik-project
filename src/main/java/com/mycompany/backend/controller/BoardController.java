@@ -2,8 +2,6 @@ package com.mycompany.backend.controller;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -25,8 +23,10 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.mycompany.backend.dto.Board;
+import com.mycompany.backend.dto.LikeBoard;
 import com.mycompany.backend.dto.Pager;
 import com.mycompany.backend.service.BoardService;
+import com.mycompany.backend.service.BoardService.LikeInfo;
 
 import lombok.extern.log4j.Log4j2;
 
@@ -184,10 +184,21 @@ public class BoardController {
 		
 	}
 	@PutMapping("/{bno}")
-  public Board updateLike(@PathVariable int bno) {
+  public int updateLike(@PathVariable int bno, @RequestParam(defaultValue = "user") String mid) {
 	  log.info("실행");
-    boardService.updateLike(bno);
-    Board dbBoard = boardService.getBoard(bno, false);
-    return dbBoard;
+	  log.info("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"+bno+" "+mid);
+	  int likeCount=boardService.likeCheck(bno, mid);
+	  log.info(likeCount);
+	  if(likeCount==0) {
+	    log.info("ㅁ머하셈"+likeCount);
+	    boardService.updateLike(bno);
+      boardService.upLikeInfo(bno, mid);
+	  }else if(likeCount==1){
+	    log.info("머하셈22222"+likeCount);
+	    boardService.downLikeInfo(bno, mid);
+	    boardService.cancelLike(bno);
+	  }
+	  return likeCount;
 	}
+	
 }

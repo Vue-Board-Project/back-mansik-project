@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.mycompany.backend.dao.BoardDao;
 import com.mycompany.backend.dto.Board;
+import com.mycompany.backend.dto.LikeBoard;
 import com.mycompany.backend.dto.Pager;
 
 import lombok.extern.slf4j.Slf4j;
@@ -19,6 +20,11 @@ public class BoardService {
 	@Resource
 	private BoardDao boardDao;
 	
+  //추천 중복 체크
+  public enum LikeInfo{
+    UP, DOWN, FAIL
+  }
+  
 	public List<Board> getBoards(Pager pager) {
 		log.info("실행");
 		return boardDao.selectByPage(pager);
@@ -65,9 +71,25 @@ public class BoardService {
 	}
 	
 	//추천 수 증가
-	public void updateLike(int bno) {
-	  boardDao.updateLike(bno);
+	public int updateLike(int bno) {
+	  return boardDao.updateLike(bno);
 	}
+	
+	public int cancelLike(int bno) {
+	  return boardDao.cancelLike(bno);
+	}
+	
+	public int upLikeInfo(int bno, String mid) {
+	  return boardDao.upLikeInfo(bno, mid);
+	}
+	
+	 public int downLikeInfo(int bno, String mid) {
+	   return boardDao.downLikeInfo(bno, mid);
+	  }
+	//추천 중복 확인
+	public int likeCheck(int bno, String mid) {
+    return boardDao.selectLikeMidbno(bno, mid);
+  }
 
 }
 

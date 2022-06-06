@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 
 import com.mycompany.backend.dto.Board;
+import com.mycompany.backend.dto.LikeBoard;
 import com.mycompany.backend.dto.Pager;
 
 @Mapper
@@ -21,5 +22,8 @@ public interface BoardDao {
 	public int countSearch(Pager pager);
 	public int updateLike(int bno);
 	public int cancelLike(int bno);
+	public int upLikeInfo(int bno, String mid);
+  public int downLikeInfo(int bno, String mid);
+  public int selectLikeMidbno(int bno, String mid);
 }
 
